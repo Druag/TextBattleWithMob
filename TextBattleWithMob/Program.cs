@@ -2,6 +2,32 @@
 {
     internal class Program
     {
+        static int Attack(int damage,int hp, int dodgeRoll, int personCritRoll)
+        {
+            int dodgeChance = 15;
+            int critChance = 20;
+
+            if (dodgeRoll <= dodgeChance)
+            {
+                Console.WriteLine("Уворот от атаки!");
+            }
+            else
+            {
+                if (personCritRoll <= critChance)
+                {
+                    hp = hp - (damage * 2);
+                    Console.WriteLine($"Критчиеское поподание, нанесено {damage * 2} урона, осталось {hp} здровья");
+                }
+                else
+                {
+                    hp = hp - damage;
+                    Console.WriteLine($"Попадание, нанесено {damage} урона, осталось {hp} здровья");
+                }
+            }
+
+            return hp;
+        }
+
         static void Main(string[] args)
         {
             Random random = new Random();
@@ -36,22 +62,31 @@
                                 Console.WriteLine("=================================================================");
                                 Console.WriteLine($"Раунд {raund}");
                                 Console.WriteLine("=================================================================");
+                                
+                                //int dodgeChance = 15; 
+                                //int critChance = 20;
 
                                 int playerDodgeRoll = random.Next(1, 101);
                                 int mobDodgeRoll = random.Next(1, 101);
                                 int playerCritRoll = random.Next(1, 101);
                                 int mobCritRoll = random.Next(1, 101);
 
-                                if (mobDodgeRoll <=16)
+                                Console.Write($"{namePlayer} делает свой ход, результат атаки =  ");
+                                playerHP = Attack(playerDamege, mobRandomHP, mobDodgeRoll, playerCritRoll);
+                                Console.Write($"{selectNameMob} делает свой ход, результат атаки =  ");
+                                mobRandomHP = Attack(mobRandomDamage, playerHP, playerDodgeRoll, mobCritRoll);
+
+                                /*
+                                if (mobDodgeRoll <= dodgeChance)
                                 {
                                     Console.WriteLine("Враг уворачивается от втоего удара!");
                                 }
                                 else
                                 {
-                                    if (playerCritRoll <= 21)
+                                    if (playerCritRoll <= critChance)
                                     {
-                                        mobRandomHP = mobRandomHP - (playerDamege + playerDamege);
-                                        Console.WriteLine($"Критчиеское поподание по врагу и нанес ему {playerDamege + playerDamege} урона у врага осталось {mobRandomHP}");
+                                        mobRandomHP = mobRandomHP - (playerDamege * 2);
+                                        Console.WriteLine($"Критчиеское поподание по врагу и нанес ему {playerDamege * 2} урона у врага осталось {mobRandomHP}");
                                     }
                                     else
                                     {
@@ -60,17 +95,18 @@
                                     }
 
                                 }
+                                
 
-                                if (playerDodgeRoll <= 16)
+                                if (playerDodgeRoll <= dodgeChance)
                                 { 
                                 Console.WriteLine("Ты увернулся от удара");
                                 }
                                 else
                                 {
-                                    if (mobCritRoll <= 21)
+                                    if (mobCritRoll <= critChance)
                                     {
-                                        playerHP = playerHP - (mobRandomDamage + mobRandomDamage);
-                                        Console.WriteLine($"Враг нанес тебе критический удар {mobRandomDamage + mobRandomDamage} и оставил тебе {playerHP}");
+                                        playerHP = playerHP - (mobRandomDamage * 2);
+                                        Console.WriteLine($"Враг нанес тебе критический удар {mobRandomDamage * 2} и оставил тебе {playerHP}");
                                     }
                                     else
                                     {
@@ -79,11 +115,9 @@
                                     }
 
                                 }
-
+                                */
 
                                 raund++;
-
-
 
                                 if (playerHP <= 0 && mobRandomHP <= 0)
                                 {
