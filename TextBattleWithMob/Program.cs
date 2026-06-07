@@ -1,4 +1,6 @@
-﻿namespace TextBattleWithMob
+﻿using System.Diagnostics.Contracts;
+
+namespace TextBattleWithMob
 {
     internal class Program
     {
@@ -24,7 +26,56 @@
                     Console.WriteLine($"Попадание, нанесено {damage} урона, осталось {hp} здровья");
                 }
             }
+            return hp;
+        }
 
+        static int Deffence(int damage, int hp, int dodgeRoll, int personCritRoll)
+        {
+            int dodgeChance = 15;
+            int critChance = 20;
+
+            if (dodgeRoll <= dodgeChance)
+            {
+                Console.WriteLine("Уворот от атаки!");
+            }
+            else
+            {
+                if (personCritRoll <= critChance)
+                {
+                    hp = hp - (damage / 2);
+                    Console.WriteLine($"Критчиеское поподание, нанесено {damage / 2} урона, осталось {hp} здровья");
+                }
+                else
+                {
+                    hp = hp - (damage / 3);
+                    Console.WriteLine($"Попадание, нанесено {damage / 3} урона, осталось {hp} здровья");
+                }
+            }
+            return hp;
+        }
+
+        static int Counterattack(int damage, int hp, int dodgeRoll, int personCritRoll)
+        {
+            int dodgeChance = 15;
+            int critChance = 20;
+
+            if (dodgeRoll <= dodgeChance)
+            {
+                Console.WriteLine("Уворот от атаки!");
+            }
+            else
+            {
+                if (personCritRoll <= critChance)
+                {
+                    hp = hp - (damage * 3);
+                    Console.WriteLine($"Критчиеское поподание, нанесено {damage * 3} урона, осталось {hp} здровья");
+                }
+                else
+                {
+                    hp = hp - (damage * 2);
+                    Console.WriteLine($"Попадание, нанесено {damage * 2} урона, осталось {hp} здровья");
+                }
+            }
             return hp;
         }
 
@@ -57,7 +108,8 @@
                         {
                             //int timeHPPlayer, timeHPMobs;
                             int raund = 1;
-                            while(playerHP > 0 && mobRandomHP > 0)
+
+                            while (playerHP > 0 && mobRandomHP > 0)
                             {
                                 Console.WriteLine("=================================================================");
                                 Console.WriteLine($"Раунд {raund}");
@@ -70,52 +122,74 @@
                                 int mobDodgeRoll = random.Next(1, 101);
                                 int playerCritRoll = random.Next(1, 101);
                                 int mobCritRoll = random.Next(1, 101);
+                                int mobAction = random.Next(1, 4);
 
-                                Console.Write($"{namePlayer} делает свой ход, результат атаки =  ");
-                                playerHP = Attack(playerDamege, mobRandomHP, mobDodgeRoll, playerCritRoll);
-                                Console.Write($"{selectNameMob} делает свой ход, результат атаки =  ");
-                                mobRandomHP = Attack(mobRandomDamage, playerHP, playerDodgeRoll, mobCritRoll);
-
-                                /*
-                                if (mobDodgeRoll <= dodgeChance)
+                                Console.WriteLine("Вывбери дейсвие: 1 - атаковать 2 - защищаться 3 - контратака");
+                                string playerChoice = Console.ReadLine();
+                                int playerChoiceInt = int.Parse(playerChoice);//Тут ошибка ввода пустой команды
+                                if (playerChoiceInt == mobAction)
                                 {
-                                    Console.WriteLine("Враг уворачивается от втоего удара!");
+                                    Console.WriteLine("Равный бой — атаки отменяют друг друга!");
+                                    break;
                                 }
                                 else
                                 {
-                                    if (playerCritRoll <= critChance)
+
+                                    switch (playerChoice)
                                     {
-                                        mobRandomHP = mobRandomHP - (playerDamege * 2);
-                                        Console.WriteLine($"Критчиеское поподание по врагу и нанес ему {playerDamege * 2} урона у врага осталось {mobRandomHP}");
-                                    }
-                                    else
-                                    {
-                                        mobRandomHP = mobRandomHP - playerDamege;
-                                        Console.WriteLine($"Ты попал по врагу и нанес ему {playerDamege} урона у врага осталось {mobRandomHP}");
+                                        case "1":
+                                            {
+                                                Console.Write($"{namePlayer} делает свой ход, результат атаки =  ");
+                                                mobRandomHP = Attack(playerDamege, mobRandomHP, mobDodgeRoll, playerCritRoll);
+                                                break;
+                                            }
+                                        case "2":
+                                            {
+                                                Console.Write($"{namePlayer} делает свой ход, результат атаки =  ");
+                                                mobRandomHP = Deffence(playerDamege, mobRandomHP, mobDodgeRoll, playerCritRoll);
+                                                break;
+                                            }
+                                        case "3":
+                                            {
+                                                Console.Write($"{namePlayer} делает свой ход, результат атаки =  ");
+                                                mobRandomHP = Counterattack(playerDamege, mobRandomHP, mobDodgeRoll, playerCritRoll);
+                                                break;
+                                            }
+                                        default:
+                                            {
+                                                Console.WriteLine("Такого варианта действия нет, пока ты думал ты пропустил ход");
+                                                break;
+                                            }
                                     }
 
-                                }
-                                
-
-                                if (playerDodgeRoll <= dodgeChance)
-                                { 
-                                Console.WriteLine("Ты увернулся от удара");
-                                }
-                                else
-                                {
-                                    if (mobCritRoll <= critChance)
+                                    switch (mobAction)
                                     {
-                                        playerHP = playerHP - (mobRandomDamage * 2);
-                                        Console.WriteLine($"Враг нанес тебе критический удар {mobRandomDamage * 2} и оставил тебе {playerHP}");
+                                        case 1:
+                                            {
+                                                Console.Write($"{selectNameMob} делает свой ход, результат атаки =  ");
+                                                playerHP = Attack(mobRandomDamage, playerHP, playerDodgeRoll, mobCritRoll);
+                                                break;
+                                            }
+                                        case 2:
+                                            {
+                                                Console.Write($"{selectNameMob} делает свой ход, результат атаки =  ");
+                                                playerHP = Deffence(mobRandomDamage, playerHP, playerDodgeRoll, mobCritRoll);
+                                                break;
+                                            }
+                                        case 3:
+                                            {
+                                                Console.Write($"{selectNameMob} делает свой ход, результат атаки =  ");
+                                                playerHP = Counterattack(mobRandomDamage, playerHP, playerDodgeRoll, mobCritRoll);
+                                                break;
+                                            }
+                                        default:
+                                            {
+                                                Console.WriteLine("Такого варианта действия нет, пока ты думал ты пропустил ход");
+                                                break;
+                                            }
                                     }
-                                    else
-                                    {
-                                        playerHP = playerHP - mobRandomDamage;
-                                        Console.WriteLine($"Враг ударил по тебе и наносит {mobRandomDamage} урона и оставил тебе {playerHP}");
-                                    }
-
                                 }
-                                */
+        
 
                                 raund++;
 
