@@ -126,11 +126,15 @@ namespace TextBattleWithMob
 
                                 Console.WriteLine("Вывбери дейсвие: 1 - атаковать 2 - защищаться 3 - контратака");
                                 string playerChoice = Console.ReadLine();
-                                int playerChoiceInt = int.Parse(playerChoice);//Тут ошибка ввода пустой команды
+                                if (!int.TryParse(playerChoice, out int playerChoiceInt))
+                                {
+                                    Console.WriteLine("Введите число от 1 до 2");
+                                    continue;
+                                }
+
                                 if (playerChoiceInt == mobAction)
                                 {
                                     Console.WriteLine("Равный бой — атаки отменяют друг друга!");
-                                    break;
                                 }
                                 else
                                 {
