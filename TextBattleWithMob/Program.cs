@@ -93,6 +93,10 @@ namespace TextBattleWithMob
 
                 Console.Write("Введите имя игрока: ");
                 string namePlayer = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(namePlayer))
+                {
+                    Console.WriteLine("Имя не может быть пустым!");
+                }
                 int playerHP = random.Next(10,16) * 10;
                 int playerDamege = random.Next(1, 3) * 10;
 
@@ -223,7 +227,8 @@ namespace TextBattleWithMob
                         }
                     default: 
                         {
-                            Console.WriteLine("Тaкого варианта дейсвия нет!"); break;
+                            Console.WriteLine("Тaкого варианта дейсвия нет!"); 
+                            break;
                         }
                 }
 
