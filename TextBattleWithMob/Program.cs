@@ -92,11 +92,13 @@ namespace TextBattleWithMob
                 int mobRandomDamage = random.Next(1, 5) * 10;
 
                 Console.Write("Введите имя игрока: ");
-                string namePlayer = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(namePlayer))
+                string namePlayer;
+                do
                 {
-                    Console.WriteLine("Имя не может быть пустым!");
-                }
+                    Console.Write("Введите имя игрока: ");
+                    namePlayer = Console.ReadLine();
+                } while (string.IsNullOrWhiteSpace(namePlayer));
+
                 int playerHP = random.Next(10,16) * 10;
                 int playerDamege = random.Next(1, 3) * 10;
 
