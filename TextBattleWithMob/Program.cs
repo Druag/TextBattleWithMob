@@ -207,7 +207,7 @@ namespace TextBattleWithMob
                                 }
                                 else if (mobRandomHP <= 0)
                                 {
-                                    Console.WriteLine("Боги улыбаюсят твоей победе");
+                                    Console.WriteLine("Боги улыбаюсят твоей победе!");
                                 }
                                 else if (playerHP <= 0)
                                 {
