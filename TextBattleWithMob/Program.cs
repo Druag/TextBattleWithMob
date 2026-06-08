@@ -91,7 +91,6 @@ namespace TextBattleWithMob
                 int mobRandomHP = random.Next(8, 14) * 10;
                 int mobRandomDamage = random.Next(1, 5) * 10;
 
-                Console.Write("Введите имя игрока: ");
                 string namePlayer;
                 do
                 {
